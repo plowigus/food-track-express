@@ -41,6 +41,7 @@ export const orders = pgTable(
     "orders",
     {
         id: uuid("id").primaryKey().defaultRandom(),
+        dailyOrderNumber: integer("daily_order_number").notNull(),
         status: orderStatusEnum("status").default("PENDING_PAYMENT").notNull(),
         totalAmountInCents: integer("total_amount_in_cents").notNull(),
         paymentProviderId: varchar("payment_provider_id", { length: 255 }), // e.g., PayU transaction ID

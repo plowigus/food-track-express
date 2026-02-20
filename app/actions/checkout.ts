@@ -2,7 +2,7 @@
 
 import { z } from "zod";
 import { db, products, orders, orderItems } from "@/packages/database/src";
-import { inArray } from "drizzle-orm";
+import { inArray, gte, max } from "drizzle-orm";
 
 const CheckoutSchema = z.object({
     firstName: z.string().min(2, "Imię musi mieć co najmniej 2 znaki"),
@@ -51,13 +51,26 @@ export async function checkout(input: CheckoutInput) {
 
         if (totalAmountInCents === 0) throw new Error("Total must be greater than 0");
 
-        // 4. Create Order in DB
+        // 4. Calculate dailyOrderNumber
+        const startOfDay = new Date();
+        startOfDay.setHours(0, 0, 0, 0);
+
+        const result = await db
+            .select({ maxValue: max(orders.dailyOrderNumber) })
+            .from(orders)
+            .where(gte(orders.createdAt, startOfDay));
+
+        const maxDaily = result[0]?.maxValue ?? 0;
+        const newDailyOrderNumber = maxDaily + 1;
+
+        // 5. Create Order in DB
         const [newOrder] = await db.insert(orders).values({
+            dailyOrderNumber: newDailyOrderNumber,
             status: "PENDING_PAYMENT",
             totalAmountInCents,
         }).returning();
 
-        // 5. Insert Order Items
+        // 6. Insert Order Items
         await db.insert(orderItems).values(
             validatedOrderItems.map((i) => ({
                 ...i,

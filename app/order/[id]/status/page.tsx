@@ -1,7 +1,7 @@
 import { db, orders, orderItems, products } from "@/packages/database/src";
 import { eq } from "drizzle-orm";
 import { notFound } from "next/navigation";
-import { OrderPoller } from "@/app/components/OrderPoller";
+import { OrderStatusStream } from "../../../components/OrderStatusStream";
 
 type PageProps = {
     params: Promise<{ id: string }>;
@@ -34,7 +34,7 @@ export default async function OrderStatusPage({ params }: PageProps) {
 
     return (
         <div className="flex min-h-screen flex-col items-center justify-center p-6 bg-zinc-950 font-sans selection:bg-lime-400 selection:text-zinc-950">
-            {isActive && <OrderPoller orderId={order.id} currentStatus={order.status} />}
+            {isActive && <OrderStatusStream orderId={order.id} initialStatus={order.status} />}
 
             <div className="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-3xl p-8 shadow-[0_0_50px_rgba(0,0,0,0.5)]">
                 {/* Header */}
@@ -42,9 +42,14 @@ export default async function OrderStatusPage({ params }: PageProps) {
                     <div className="inline-block px-4 py-1.5 rounded-full bg-zinc-950 border border-zinc-800 text-xs font-mono font-bold tracking-widest text-zinc-500 mb-6">
                         ZAMÓWIENIE
                     </div>
-                    <h1 className="text-sm font-mono tracking-tighter text-zinc-100 break-all mb-2">
+                    {/* Massive Daily Order Number */}
+                    <div className="text-8xl font-black tracking-tighter text-white drop-shadow-lg mb-2">
+                        #{String(order.dailyOrderNumber).padStart(3, '0')}
+                    </div>
+                    {/* Hidden small UUID */}
+                    <div className="text-[0.6rem] font-mono tracking-tighter text-zinc-600 break-all mb-4 opacity-50">
                         {order.id}
-                    </h1>
+                    </div>
                     <p className="text-zinc-500 text-sm">
                         Total: <span className="font-bold text-white">{(order.totalAmountInCents / 100).toFixed(2)} zł</span>
                     </p>
