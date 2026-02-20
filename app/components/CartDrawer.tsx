@@ -154,7 +154,7 @@ export function CartDrawer() {
                                         name="firstName"
                                         required
                                         minLength={2}
-                                        placeholder="np. Walter"
+                                        placeholder="np. Kamila (bez tytułów naukowych)"
                                         className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:outline-none focus:border-lime-400 focus:ring-1 focus:ring-lime-400 transition-all"
                                     />
                                 </div>
@@ -165,7 +165,7 @@ export function CartDrawer() {
                                         id="email"
                                         name="email"
                                         required
-                                        placeholder="walter@white.xyz"
+                                        placeholder="chemburger@chemia.xyz"
                                         className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:outline-none focus:border-lime-400 focus:ring-1 focus:ring-lime-400 transition-all"
                                     />
                                 </div>
