@@ -113,6 +113,7 @@ export async function checkout(input: CheckoutInput) {
             },
             body: JSON.stringify({
                 notifyUrl: `${baseUrl}/api/webhooks/payu`,
+                continueUrl: `${baseUrl}/order/${newOrder.id}/status`,
                 customerIp: "127.0.0.1", // Needed by PayU, in prod you'd get real IP
                 merchantPosId: payuPosId,
                 description: `Zamówienie Chemik Burger: ${validatedData.firstName}`,
