@@ -3,6 +3,21 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  
+  /* Fallbacks for non-iOS browsers */
+  --sat: 0px; 
+  --sar: 0px;
+  --sab: 0px;
+  --sal: 0px;
+}
+
+@supports (padding: env(safe-area-inset-top)) {
+  :root {
+    --sat: env(safe-area-inset-top);
+    --sar: env(safe-area-inset-right);
+    --sab: env(safe-area-inset-bottom);
+    --sal: env(safe-area-inset-left);
+  }
 }
 
 @theme inline {
@@ -10,6 +25,11 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  
+  --spacing-safe-top: var(--sat);
+  --spacing-safe-right: var(--sar);
+  --spacing-safe-bottom: var(--sab);
+  --spacing-safe-left: var(--sal);
 }
 
 @media (prefers-color-scheme: dark) {
