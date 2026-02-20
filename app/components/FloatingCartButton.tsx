@@ -2,16 +2,19 @@
 
 import { useCartStore } from "@/app/store/cart-store";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 
 export function FloatingCartButton() {
     const { getTotalItems, toggleCart } = useCartStore();
     const [mounted, setMounted] = useState(false);
+    const pathname = usePathname();
 
     useEffect(() => {
         setMounted(true);
     }, []);
 
     if (!mounted) return null;
+    if (pathname?.startsWith("/kitchen")) return null;
 
     const totalItems = getTotalItems();
 

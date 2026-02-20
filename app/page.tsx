@@ -1,12 +1,24 @@
 import Image from "next/image";
 import { MENU_ITEMS } from "./constants/menu";
 import { MenuCard } from "./components/MenuCard";
+import { db, products } from "@/packages/database/src";
+import { eq } from "drizzle-orm";
 
-export const dynamic = "force-static";
+export const dynamic = "force-dynamic";
 
-export default function HomePage() {
-  const burgers = MENU_ITEMS.filter((item) => item.category === "burgers");
-  const sidesAndDrinks = MENU_ITEMS.filter((item) => item.category !== "burgers");
+export default async function HomePage() {
+  const availableDBProducts = await db.query.products.findMany({
+    where: eq(products.isAvailable, true),
+    columns: { id: true },
+  });
+
+  const availableProductIds = new Set(availableDBProducts.map(p => p.id));
+
+  // Filter static MENU_ITEMS to only those marked as available in DB
+  const validMenuItems = MENU_ITEMS.filter((item) => availableProductIds.has(item.id));
+
+  const burgers = validMenuItems.filter((item) => item.category === "burgers");
+  const sidesAndDrinks = validMenuItems.filter((item) => item.category !== "burgers");
 
   return (
     <main className="min-h-screen bg-zinc-950 text-zinc-50 font-sans selection:bg-lime-400/30">

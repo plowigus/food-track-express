@@ -111,7 +111,7 @@ export async function checkout(input: CheckoutInput) {
         try {
             const parsed = JSON.parse(tokenText);
             access_token = parsed.access_token;
-        } catch (e) {
+        } catch (err) {
             console.error("Failed to parse token response:", tokenText);
             throw new Error("Invalid JSON from PayU Auth API");
         }
@@ -167,7 +167,7 @@ export async function checkout(input: CheckoutInput) {
         let payuData: any;
         try {
             payuData = JSON.parse(orderText);
-        } catch (e) {
+        } catch (err) {
             console.error("Failed to parse order response:", orderText);
             throw new Error("Invalid JSON from PayU Order API");
         }

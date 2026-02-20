@@ -1,4 +1,4 @@
-import { db, orders, orderItems, products } from "@/packages/database/src";
+import { db, orders } from "@/packages/database/src";
 import { eq } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import { OrderStatusStream } from "../../../components/OrderStatusStream";

@@ -3,11 +3,13 @@
 import { useCartStore } from "@/app/store/cart-store";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 
 export function CartDrawer() {
     const { items, isOpen, toggleCart, updateQuantity, removeItem, getCartTotal, clearCart } = useCartStore();
     const [mounted, setMounted] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const pathname = usePathname();
 
     useEffect(() => {
         setMounted(true);
@@ -28,6 +30,7 @@ export function CartDrawer() {
     }, [isOpen]);
 
     if (!mounted) return null; // Avoid hydration mismatch for persist
+    if (pathname?.startsWith("/kitchen")) return null;
 
     const totalCents = getCartTotal();
 
